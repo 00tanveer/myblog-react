@@ -21,11 +21,11 @@ class Menu extends React.Component {
 
                 > .button {
                     background-color: yellow;
-                    height: 7rem;
-                    width: 7rem;
+                    height: 5.8rem;
+                    width: 5.8rem;
                     position: fixed;
-                    top: 6rem;
-                    right: 6rem;
+                    top: 3rem;
+                    right: 3rem;
                     border-radius: 50%;
                     z-index: 2000;
                     box-shadow: 0 1rem 3rem rgba(black, .1);
@@ -33,13 +33,13 @@ class Menu extends React.Component {
                     cursor: pointer;
                     
                     > span {
-                        margin-right: 1.5rem;
+                        //margin-right: .5rem;
                         display: inline-block;
                     }
 
                     > .icon {
                         position: relative;
-                        margin-top: 3.5rem;
+                        margin-top: 2.8rem;
                         
                         &,
                         &:before,
@@ -65,12 +65,12 @@ class Menu extends React.Component {
                 }
 
                 > .background {
-                    height: 6rem;
-                    width: 6rem;
+                    height: 5.6rem;
+                    width: 5.6rem;
                     border-radius: 50%;
                     position: fixed;
-                    top: 6.5rem;
-                    right: 6.5rem;
+                    top: 3rem;
+                    right: 3rem;
                     background-image: linear-gradient(to bottom left, black 70%, yellow 30%);
                     z-index: 1000;
                     transition: transform .8s cubic-bezier(.86, 0, .07, 1);
@@ -131,7 +131,7 @@ class Menu extends React.Component {
                 }
 
                 > .checkbox:checked ~ .background {
-                    transform: scale(45);
+                    transform: scale(53);
                 }
                 > .checkbox:checked ~ .navi {
                     opacity: 1;
