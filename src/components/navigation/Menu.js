@@ -111,7 +111,7 @@ class Menu extends React.Component {
                                     text-decoration: none;
                                     text-transform: uppercase;
                                     background-image: linear-gradient(120deg, transparent 0%, transparent 50%, yellow 50%);
-                                    background-size: 220%;
+                                    background-size: 230%;
                                     transition: all .4s;
                                 }
                                 &:hover,
@@ -171,11 +171,11 @@ class Menu extends React.Component {
                         <div className="background">&nbsp;</div>
                         <nav className="navi">
                             <ul className="list_">
-                                <li className="item"><a href="#" className="link_"><span>01</span>About Natours</a></li>
-                                <li className="item"><a href="#" className="link_"><span>02</span>Your benefits</a></li>
-                                <li className="item"><a href="#" className="link_"><span>03</span>Popular tours</a></li>
-                                <li className="item"><a href="#" className="link_"><span>04</span>Stories</a></li>
-                                <li className="item"><a href="#" className="link_"><span>05</span>Book now</a></li>
+                                <li className="item"><a href="#" className="link_">Code</a></li>
+                                <li className="item"><a href="#" className="link_">Photography</a></li>
+                                <li className="item"><a href="#" className="link_">Book Reviews</a></li>
+                                <li className="item"><a href="#" className="link_">Life</a></li>
+                                <li className="item"><a href="#" className="link_">Contact</a></li>
                             </ul>
                         </nav>
                 </div> 
