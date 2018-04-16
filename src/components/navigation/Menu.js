@@ -75,7 +75,7 @@ class Menu extends React.Component {
                         &:before,
                         &:after {
                             width: 3rem;
-                            height: 2px;
+                            height: 1px;
                             background-color: #333;
                             display: inline-block;
                         }
@@ -144,7 +144,7 @@ class Menu extends React.Component {
                                     text-decoration: none;
                                     text-transform: uppercase;
                                     background-image: linear-gradient(110deg, transparent 0%, transparent 50%, ${props => props.theme.main} 50%);
-                                    clip-path: polygon(14% 0%, 100% 0, 86% 100%, 0% 100%);
+                                    clip-path: polygon(10% 0%, 100% 0, 90% 100%, 0% 100%);
                                     background-size: 240%;
                                     transition: all .4s;
                                 }
@@ -153,6 +153,7 @@ class Menu extends React.Component {
                                     background-position: 100%;
                                     color: black;
                                     transform: translateX(1rem);
+                                    font-weight: 300;
                                 }
 
                                 > span {
