@@ -138,7 +138,7 @@ class Menu extends React.Component {
                                     font-family: "Lato", sans-serif;
                                     font-weight: 100;
                                     padding: 1rem 2rem;
-                                    width: 30rem;
+                                    width: 33rem;
                                     color: white;
                                     text-shadow: 0 0 3px white;
                                     text-decoration: none;
