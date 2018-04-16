@@ -104,14 +104,18 @@ class Menu extends React.Component {
                                 &,
                                 &:visited {
                                     display: inline-block;
-                                    font-size: 3rem;
-                                    font-weight: 300;
+                                    font-size: 3.3rem;
+                                    font-family: "Roboto", sans-serif;
+                                    font-weight: 200;
                                     padding: 1rem 2rem;
+                                    width: 30rem;
                                     color: white;
+                                    text-shadow: 0 0 3px white;
                                     text-decoration: none;
                                     text-transform: uppercase;
-                                    background-image: linear-gradient(120deg, transparent 0%, transparent 50%, yellow 50%);
-                                    background-size: 230%;
+                                    background-image: linear-gradient(110deg, transparent 0%, transparent 50%, yellow 50%);
+                                    clip-path: polygon(14% 0%, 100% 0, 86% 100%, 0% 100%);
+                                    background-size: 240%;
                                     transition: all .4s;
                                 }
                                 &:hover,
@@ -160,6 +164,7 @@ class Menu extends React.Component {
             }
             
         `
+        //background-image: linear-gradient(110deg, transparent 0%, transparent 60%, yellow 40%);
         return (
             <StyledLol>
                 <div className="navigation">
