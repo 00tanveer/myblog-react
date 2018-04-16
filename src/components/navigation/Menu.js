@@ -150,14 +150,14 @@ class Menu extends React.Component {
                     top: 1rem;
                 }
 
-                > .checkbox:checked + > .button > .icon {
+                > .checkbox:checked + .button > .icon {
                     background-color: transparent;
                 }
-                > .checkbox:checked + > .button > .icon:before {
+                > .checkbox:checked + .button > .icon:before {
                     top: 0;
                     transform: rotate(135deg);
                 }
-                > .checkbox:checked + > .button > .icon:after {
+                > .checkbox:checked + .button > .icon:after {
                     top: 0;
                     transform: rotate(-135deg);
                 }
