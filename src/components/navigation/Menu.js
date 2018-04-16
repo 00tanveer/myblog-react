@@ -1,10 +1,34 @@
 import React, {Component} from 'react';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import {Link} from 'react-router-dom';
 
 class Menu extends React.Component {
 
+    constructor(){
+        super();
+        this.state = {
+            width: window.innerWidth
+        }
+        this.updateDimensions = this.updateDimensions.bind(this);
+    }
+
+    updateDimensions() {
+        let update_width = window.innerWidth;
+        this.setState({ width: update_width});
+    }
+
+    componentDidMount(){
+        console.log(window.innerWidth);
+        this.updateDimensions();
+        window.addEventListener("resize", this.updateDimensions.bind(this));
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions.bind(this));
+    }
+
     render(){
+        //console.log(window.innerWidth);
         const Lol = () => (
             <div className="white">
                 <h1>Hello</h1>
@@ -14,6 +38,10 @@ class Menu extends React.Component {
             </div>   
         )
 
+        const theme = {
+            main: 'white'
+        };
+
         const StyledLol = styled.div`
             > .navigation {
                 > .checkbox {
@@ -21,7 +49,8 @@ class Menu extends React.Component {
                 }
 
                 > .button {
-                    background-color: yellow;
+                    //background-color: yellow;
+                    background-color: ${props => props.theme.main};
                     height: 5.8rem;
                     width: 5.8rem;
                     position: fixed;
@@ -29,7 +58,7 @@ class Menu extends React.Component {
                     right: 3rem;
                     border-radius: 50%;
                     z-index: 2000;
-                    box-shadow: 0 1rem 3rem rgba(black, .1);
+                    box-shadow: 0 1rem 3rem rgba(${props => props.theme.main}, .1);
                     text-align: center;
                     cursor: pointer;
                     
@@ -72,7 +101,7 @@ class Menu extends React.Component {
                     position: fixed;
                     top: 3rem;
                     right: 3rem;
-                    background-image: linear-gradient(to bottom left, black 70%, yellow 30%);
+                    background-image: linear-gradient(to bottom left, black 75%, ${props => props.theme.main} 25%);
                     z-index: 1000;
                     transition: transform .8s cubic-bezier(.86, 0, .07, 1);
                 }
@@ -106,15 +135,15 @@ class Menu extends React.Component {
                                 &:visited {
                                     display: inline-block;
                                     font-size: 3.3rem;
-                                    font-family: "Roboto", sans-serif;
-                                    font-weight: 200;
+                                    font-family: "Lato", sans-serif;
+                                    font-weight: 100;
                                     padding: 1rem 2rem;
                                     width: 30rem;
                                     color: white;
                                     text-shadow: 0 0 3px white;
                                     text-decoration: none;
                                     text-transform: uppercase;
-                                    background-image: linear-gradient(110deg, transparent 0%, transparent 50%, yellow 50%);
+                                    background-image: linear-gradient(110deg, transparent 0%, transparent 50%, ${props => props.theme.main} 50%);
                                     clip-path: polygon(14% 0%, 100% 0, 86% 100%, 0% 100%);
                                     background-size: 240%;
                                     transition: all .4s;
@@ -136,15 +165,21 @@ class Menu extends React.Component {
                 }
 
                 > .checkbox:checked ~ .background {
-                    transform: scale(53);
+                    //transform: scale(53);
+                    transform: scale(calc(${this.state.width}/24));
+                    //zoom: 5;
                 }
+                /* > .checkbox:checked ~ .button {
+                    width: 4rem;
+                    height: 4rem;
+                } */
                 > .checkbox:checked ~ .navi {
                     opacity: 1;
                     width: 100%;
                 }
-
                 > .button:hover > .icon:before {
-                    top: -1rem;
+                    //top: -1rem;
+                    top: calc(-2rem + 1rem);
                 }
 
                 > .button:hover > .icon::after {
@@ -167,9 +202,11 @@ class Menu extends React.Component {
         `
         //background-image: linear-gradient(110deg, transparent 0%, transparent 60%, yellow 40%);
         return (
-            <StyledLol>
-                <div className="navigation">
-                    <input type="checkbox" className="checkbox" id="navi-toggle"/>
+            
+            <ThemeProvider theme={theme}>
+                <StyledLol>
+                    <div className="navigation">
+                        <input type="checkbox" className="checkbox" id="navi-toggle" />
                         <label for="navi-toggle" className="button">
                             <span className="icon">&nbsp;</span>
                         </label>
@@ -184,8 +221,10 @@ class Menu extends React.Component {
                                 <li className="item"><Link to="/contact" className="link_">Contact</Link></li>
                             </ul>
                         </nav>
-                </div> 
-            </StyledLol>
+                    </div> 
+                </StyledLol>
+            </ThemeProvider>
+            
         );
     }
 }

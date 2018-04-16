@@ -16,8 +16,6 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        <Img src="bitmoji_1.jpg" alt="Smiley face">
-        </Img>
         <Menu/>
       </div>
     );

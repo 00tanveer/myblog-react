@@ -17,6 +17,7 @@ injectGlobal`
     }
     html{
         background-color: black;
+        
         font-size: 62.5%;
         color: black;
     }
