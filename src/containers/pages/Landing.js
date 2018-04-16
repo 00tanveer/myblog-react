@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Menu from '../components/navigation/Menu';
+import Menu from '../../components/navigation/Menu';
 import styled from 'styled-components';
 
 const Img = styled.img`

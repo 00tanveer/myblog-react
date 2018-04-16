@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 
 class Menu extends React.Component {
 
@@ -176,11 +177,11 @@ class Menu extends React.Component {
                         <div className="background">&nbsp;</div>
                         <nav className="navi">
                             <ul className="list_">
-                                <li className="item"><a href="#" className="link_">Code</a></li>
-                                <li className="item"><a href="#" className="link_">Photography</a></li>
-                                <li className="item"><a href="#" className="link_">Book Reviews</a></li>
-                                <li className="item"><a href="#" className="link_">Life</a></li>
-                                <li className="item"><a href="#" className="link_">Contact</a></li>
+                                <li className="item"><Link to="/code" className="link_">Code</Link></li>
+                                <li className="item"><Link to="/photography" className="link_">Photography</Link></li>
+                                <li className="item"><Link to="/bookreviews" className="link_">Book Reviews</Link></li>
+                                <li className="item"><Link to="/life" className="link_">Life</Link></li>
+                                <li className="item"><Link to="/contact" className="link_">Contact</Link></li>
                             </ul>
                         </nav>
                 </div> 

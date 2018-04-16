@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Landing from './containers/Landing';
+
+import App from './containers/App';
+
 import registerServiceWorker from './registerServiceWorker';
 import {injectGlobal} from 'styled-components';
+import {BrowserRouter} from 'react-router-dom';
 
 injectGlobal`
     *,
@@ -23,5 +26,8 @@ injectGlobal`
     }
 `
 
-ReactDOM.render(<Landing />, document.getElementById('root'));
+//ReactDOM.render(<Landing />, document.getElementById('root'));
+ReactDOM.render(<BrowserRouter>
+    <App />
+</BrowserRouter>, document.getElementById('root'));
 registerServiceWorker();
