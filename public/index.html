@@ -10,9 +10,55 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet"> 
 <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400,700,900" rel="stylesheet">
-    <!--
+    
+    <style type="text/css">
+      a,
+      a:visited {
+        color: #08c;
+      }
+    
+      .md-RichEditor-root {
+        font-family: 'Georgia', serif;
+      }
+    
+      .md-RichEditor-editor {
+        max-width: 700px;
+        background: #fbffff;
+      }
+    
+      .md-block-atomic-wrapper {
+        position: relative;
+        border: 1px solid #f7f7f7;
+      }
+    
+      .md-block-atomic-embed button {
+        background: #fff;
+        border: 1px solid #7d7d7d;
+      }
+    
+      .md-block-atomic-wrapper hr {
+        border: none;
+        background: #5a5a5a;
+        min-height: 3px;
+        max-width: 50px;
+      }
+    
+      .md-RichEditor-editor .md-RichEditor-blockquote {
+        font-family: 'Hoefler Text', 'Georgia', serif;
+      }
+    
+      .md-RichEditor-editor .public-DraftStyleDefault-pre {
+        font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+      }
+    
+      .md-block-atomic-wrapper.md-block-atomic-wrapper-separator {
+        border-color: transparent;
+      }
+    </style>
+<!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.

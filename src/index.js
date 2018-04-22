@@ -16,9 +16,9 @@ injectGlobal`
         box-sizing: inherit;
     }
     html{
-        background-color: black;
+        background-color: papayawhip;
         
-        font-size: 62.5%;
+        //font-size: 62.5%;
         color: black;
     }
     body {
