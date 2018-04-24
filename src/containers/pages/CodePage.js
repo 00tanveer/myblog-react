@@ -1,75 +1,93 @@
 import React from 'react';
-import {
-    ImageSideButton,
-    Block,
-    addNewBlock,
-    createEditorState,
-    Editor,
-} from 'medium-draft';
-import 'isomorphic-fetch';
+import ReactQuill from 'react-quill';
 
-class CustomImageSideButton extends ImageSideButton {
+const CustomToolbar = () => (
+    <div id="toolbar">
+      <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
+        <option value="1" />
+        <option value="2" />
+        <option selected />
+      </select>
+      <button className="ql-bold" />
+      <button className="ql-italic" />
+      <select className="ql-color">
+        <option value="red" />
+        <option value="green" />
+        <option value="blue" />
+        <option value="orange" />
+        <option value="violet" />
+        <option value="#d0d1d2" />
+        <option selected />
+      </select>
+      <button className="ql-blockquote" />
+      <button className="ql-image" />
+      <button className="ql-strike" />
+    </div>
+  );
 
-    /*
-    We will only check for first file and also whether
-    it is an image or not.
-    */
-    onChange(e) {
-        const file = e.target.files[0];
-        if (file.type.indexOf('image/') === 0) {
-            // This is a post request to server endpoint with image as `image`
-            const src = URL.createObjectURL(file);
-            this.props.setEditorState(addNewBlock(
-                this.props.getEditorState(),
-                Block.IMAGE, {
-                    src,
-                }
-            ));
-        }
-        this.props.close();
-    }
-}
-
-// Now pass this component instead of default prop to Editor example above.
 class CodePage extends React.Component {
     constructor(props) {
-        super(props);
-
-        this.sideButtons = [{
-            title: 'Image',
-            component: CustomImageSideButton,
-        }];
-
-        this.state = {
-            editorState: createEditorState(), // for empty content
-        };
-
-        /*
-        this.state = {
-          editorState: createEditorState(data), // with content
-        };
-        */
-
-        this.onChange = (editorState) => {
-            this.setState({ editorState });
-        };
+        super(props)
+        this.state = { 
+            text: ''
+            //CustomToolbar: StyledCustomToolbar
+    } // You can also pass a Quill Delta here
+      this.handleChange = this.handleChange.bind(this)
     }
-
-    componentDidMount() {
-        this.refs.editor.focus();
+  
+    handleChange(value) {
+      this.setState({ text: value })
     }
-
+  
+    // componentDidMount(){
+    //     const StyledCustomToolbar = styled(CustomToolbar)`
+    //         > .ql-toolbar .ql-snow{
+    //             position: fixed;
+    //             width: 100%;
+    //             display: flex;
+    //             justify-content: center;
+    //             margin-bottom: 10px;
+    //             z-index: 2;
+    //             background-color: black;
+    //         }
+            
+    //     `
+    //     this.setState({CustomToolbar: StyledCustomToolbar});
+    // }
+    
     render() {
-        const { editorState } = this.state;
+
+        
         return (
-            <Editor
-                ref="editor"
-                editorState={editorState}
-                onChange={this.onChange}
-                sideButtons={this.sideButtons}
-            />
-        );
+            
+            <div className="text-editor">
+                <CustomToolbar />
+                &nbsp;
+                <ReactQuill 
+                    value={this.state.text}
+                    onChange={this.handleChange} 
+                    modules={CodePage.modules}
+                    formats={CodePage.formats}/>
+            </div>
+      )
+    }
+  }
+
+CodePage.modules = {
+    toolbar: {
+        container: "#toolbar"
+    },
+    clipboard: {
+        matchVisual: false,
     }
 };
 
-export default CodePage;
+  
+CodePage.formats = [
+   'header', 'font', 'size',
+   'bold', 'italic', 'underline', 'strike', 'blockquote',
+   'list', 'bullet', 'indent',
+   'link', 'image', 'color',
+]
+
+  export default CodePage;
