@@ -34,7 +34,6 @@ class Landing extends Component {
   render() {
     return (
       <div style={{position: "relative"}}>
-        <H1>ThE TeCH ALieN</H1>
         <H2>TANVEER FAHAD HAQ</H2>
         <Menu/>
       </div>
