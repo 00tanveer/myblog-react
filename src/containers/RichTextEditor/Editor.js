@@ -20,9 +20,11 @@ const CustomToolbar = () => (
         <option selected />
       </select>
       <button className="ql-blockquote" />
+      <button className="ql-align" />
       <button className="ql-image" />
       <button className="ql-link" />
-      <button className="ql-list" />
+      <button className="ql-list" value="ordered" />
+      <button className="ql-list" value="bullet" />
       <button className="ql-strike" />
     </div>
   );
@@ -34,8 +36,8 @@ class Editor extends React.Component {
         this.state = { 
             text: ''
             //CustomToolbar: StyledCustomToolbar
-    } // You can also pass a Quill Delta here
-      this.handleChange = this.handleChange.bind(this)
+        } // You can also pass a Quill Delta here
+        this.handleChange = this.handleChange.bind(this)
     }
   
     handleChange(value) {
