@@ -33,26 +33,17 @@ class Editor extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { 
-<<<<<<< HEAD
-            text: ''
-            //CustomToolbar: StyledCustomToolbar
-        } // You can also pass a Quill Delta here
-        this.handleChange = this.handleChange.bind(this)
-=======
+        this.state = {
            editorHtml: '',
            mountedEditor: false
         } // You can also pass a Quill Delta here
-        
+
         this.quillRef = null;
         this.reactQuillRef = null;
         this.handleChange = this.handleChange.bind(this);
         this.attachQuillRefs = this.attachQuillRefs.bind(this);
-
-        
->>>>>>> 391966bf33ab216efb67ccb53c8cc5a46544f2b3
     }
-  
+
     //LIFECYCLE HOOKS
     componentDidMount(){
         this.attachQuillRefs();
@@ -81,10 +72,10 @@ class Editor extends React.Component {
             <div className="text-editor">
                 <CustomToolbar />
                 &nbsp;
-                <ReactQuill 
+                <ReactQuill
                     ref={(el) => {this.reactQuillRef = el}}
                     value={this.state.text}
-                    onChange={this.handleChange} 
+                    onChange={this.handleChange}
                     modules={Editor.modules}
                     formats={Editor.formats}
                     defaultValue={this.state.editorHtml}/>
@@ -118,7 +109,7 @@ Editor.modules = {
 //     ['clean'],                                       // remove formatting
 // ]
 
-  
+
 Editor.formats = [
    'header', 'font', 'size',
    'bold', 'italic', 'underline', 'strike', 'blockquote',
