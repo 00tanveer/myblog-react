@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
+import axios from 'axios';
 
 const CustomToolbar = () => (
     <div id="toolbar">
@@ -20,6 +21,7 @@ const CustomToolbar = () => (
         <option selected />
       </select>
       <button className="ql-blockquote" />
+      <button className="ql-code-block" />
       <button className="ql-align" />
       <button className="ql-image" />
       <button className="ql-link" />
@@ -47,6 +49,13 @@ class Editor extends React.Component {
     //LIFECYCLE HOOKS
     componentDidMount(){
         this.attachQuillRefs();
+        axios.get('/blogs/blogs?page=2')
+            .then(res => {
+                console.log('hoga');
+                console.log(res.data);
+                this.quillRef.setContents(res.data.data.docs[7].delta_ops);
+            })
+        this.quillRef.setContents()
     }
 
     componentDidUpdate(){
@@ -64,7 +73,56 @@ class Editor extends React.Component {
 
     handleChange(html) {
       this.setState({ editorHtml: html });
-      console.log(this.quillRef.getContents());
+      //console.log(this.quillRef.getContents().ops);
+
+      let blog = {
+          title: 'blog',
+          body: '',
+          delta_ops: this.quillRef.getContents().ops
+      }
+      console.log(blog);
+      axios.post('/blogs/blogs', {blog})
+        .then(res => {
+            console.log(res);
+        })
+    }
+
+    imageHandler(){
+        const input = document.createElement('input');
+        input.setAttribute('type','file');
+        input.click();
+
+        input.onchange = () => {
+            const file = input.files[0];
+
+            if(/^image\//.test(file.type)){
+                this.saveToServer(file);
+            } else {
+                console.warn('You can only upload images.');
+            }
+        };
+    }
+
+    saveToServer(file) {
+        const fd = new FormData();
+        fd.append('image', file);
+  
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:3000/upload/image', true);
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            // this is callback data: url
+            const url = JSON.parse(xhr.responseText).data;
+            this.insertToEditor(url);
+          }
+        };
+        xhr.send(fd);
+    }
+
+    insertToEditor(url) {
+        // push image url to rich editor.
+        const range = this.quillRef.getEditor.getSelection();
+        this.quillRef.getEditor.insertEmbed(range.index, 'image', `http://localhost:9000${url}`);
     }
 
     render(){
@@ -74,7 +132,6 @@ class Editor extends React.Component {
                 &nbsp;
                 <ReactQuill
                     ref={(el) => {this.reactQuillRef = el}}
-                    value={this.state.text}
                     onChange={this.handleChange}
                     modules={Editor.modules}
                     formats={Editor.formats}
@@ -86,7 +143,10 @@ class Editor extends React.Component {
 
 Editor.modules = {
     toolbar: {
-        container: '#toolbar'
+        container: '#toolbar',
+        handlers: {
+            'image': this.imageHandler
+        }
     },
     clipboard: {
         matchVisual: false,

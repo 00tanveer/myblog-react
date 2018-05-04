@@ -1,31 +1,34 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import Button from '../../components/ui/Button';
+import axios from 'axios';
 class CodePage extends React.Component {
-    
-    render() { 
-      const Button = styled.button`
-        display: inline-block;
-        color: white;
-        background-color: black;
-        margin: 1em;
-        border: 1px solid white;
-        border-radius: 3px;
-        font-size: 2rem;
-        padding: 1rem;
-      `
-      const LinkButton = Button.withComponent(Link);
-      const StyledLinkButton = LinkButton.extend`
-        text-decoration: none;
-      `;
-
-        return (
-          <div>
-            <StyledLinkButton to='/code/post'>Post a blog</StyledLinkButton>
-          </div>
-      );
+    state = {
+      blogs: []
     }
+  
+  componentDidMount(){
+    axios.get('/blogs/blogs')
+      .then(res => {
+        //console.log(res.data.data.docs[0]);
+        const blogs = res.data.data.docs;
+        this.setState({blogs});
+        console.log(this.state.blogs);
+      })
+      .catch(function(err){
+        console.log(err);
+      })
   }
+  render() { 
+      return (
+        <div>
+          <Button link label='Post a blog' to='/code/post'/>
+          <ul>
+            {this.state.blogs.map(blog => <li>{blog.title}</li>)}
+          </ul>
+        </div>
+    );
+  }
+}
 
 export default CodePage;

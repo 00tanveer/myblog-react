@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Landing from './pages/Landing';
+import AdminPage from './pages/AdminPage';
 import CodePage from './pages/CodePage';
 import PhotoPage from './pages/PhotoPage';
 import BookReviewsPage from './pages/BookReviewsPage';
@@ -14,6 +15,7 @@ class App extends React.Component {
         return (
             <div>
                 <Route exact strict path='/' component={Landing}/>
+                <Route exact strict path='/adminlogin' component={AdminPage}/>
                 <Route exact strict path='/code' component={CodePage}/>
                 <Route exact strict path='/code/post' component={Editor}/>
                 <Route exact strict path='/photography' component={PhotoPage}/>
