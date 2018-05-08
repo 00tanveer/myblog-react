@@ -33,7 +33,7 @@ const H2 = styled.h2`
 class Landing extends React.Component {
   constructor(props){
     super(props);
-
+    this.logout = this.logout.bind(this);
   }
   //AUTH
   logout(){
@@ -50,7 +50,7 @@ class Landing extends React.Component {
         <Menu/>
         {
           isAuthenticated() && (
-            <button><a onClick={this.logout.bind(this)}>Log out</a></button> 
+            <button><a onClick={this.logout}>Log out</a></button> 
           )
         }
       </div>

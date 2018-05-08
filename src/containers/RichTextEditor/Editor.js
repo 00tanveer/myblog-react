@@ -44,6 +44,7 @@ class Editor extends React.Component {
         this.reactQuillRef = null;
         this.handleChange = this.handleChange.bind(this);
         this.attachQuillRefs = this.attachQuillRefs.bind(this);
+        this.login = this.login.bind(this);
     }
 
     //AUTH
@@ -53,14 +54,16 @@ class Editor extends React.Component {
 
     //LIFECYCLE HOOKS
     componentDidMount(){
-        this.attachQuillRefs();
-        axios.get('/blogs/blogs?page=2')
-            .then(res => {
-                console.log('hoga');
-                console.log(res.data);
-                this.quillRef.setContents(res.data.data.docs[7].delta_ops);
-            })
-        this.quillRef.setContents()
+        if(this.props.auth.isAuthenticated()){
+            this.attachQuillRefs();
+            axios.get('/blogs/blogs?page=2')
+                .then(res => {
+                    console.log('hoga');
+                    console.log(res.data);
+                    this.quillRef.setContents(res.data.data.docs[7].delta_ops);
+                })
+            this.quillRef.setContents();
+        }
     }
 
     componentDidUpdate(){
@@ -151,13 +154,7 @@ class Editor extends React.Component {
             }
             {
                 !isAuthenticated() && (
-                    <h4>
-                        You are not logged in! Please{' '}
-                        <a onClick={this.login.bind(this)}>
-                            Log In
-                        </a>
-                        {' '} to continue.
-                    </h4>
+                    <button onClick={this.login}>Log in</button>
                 )
             }
             </div>
