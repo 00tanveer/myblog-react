@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import {Link} from 'react-router-dom';
 
@@ -29,14 +29,6 @@ class Menu extends React.Component {
 
     render(){
         //console.log(window.innerWidth);
-        const Lol = () => (
-            <div className="white">
-                <h1>Hello</h1>
-                <div className="yellow">
-                    <h2>Tan</h2>
-                </div>
-            </div>   
-        )
 
         const theme = {
             main: 'white'

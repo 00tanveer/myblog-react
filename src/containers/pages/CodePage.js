@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactQuill from 'react-quill';
 import Button from '../../components/ui/Button';
 import axios from 'axios';
 class CodePage extends React.Component {

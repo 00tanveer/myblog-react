@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Menu from '../../components/navigation/Menu';
 
 class LifePage extends React.Component {

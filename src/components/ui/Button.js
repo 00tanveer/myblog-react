@@ -17,6 +17,9 @@ const Button = (props) => {
     const LinkButton = Button.withComponent(Link);
     const StyledLinkButton = LinkButton.extend`
       text-decoration: none;
+      text-align: center;
+      width: 50%;
+      margin: 2rem auto;
     `;
     return(
         props.link ? <StyledLinkButton to={props.to}>{props.label}</StyledLinkButton> :<Button>{props.label}</Button>

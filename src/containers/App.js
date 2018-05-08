@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Landing from './pages/Landing';
 import AdminPage from './pages/AdminPage';
 import CodePage from './pages/CodePage';
@@ -7,21 +7,54 @@ import BookReviewsPage from './pages/BookReviewsPage';
 import LifePage from './pages/LifePage';
 import ContactPage from './pages/ContactPage';
 import Editor from './RichTextEditor/Editor';
+import Callback from '../components/auth/Callback';
 
-import {Switch, Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
+import {requireAuth, isLoggedIn} from '../utils/AuthService';
+import AuthService from '../utils/AuthService';
+import history from '../history';
 
+const auth = new AuthService();
+
+const handleAuthentication = ({location}) => {
+    if (/access_token|id_token|error/.test(location.hash)) {
+      auth.handleAuthentication();
+    }
+  }
 class App extends React.Component {
     render(){
+        const AdminPageSignup = (props) => {
+            return(
+                <AdminPage 
+                    mode='signup'
+                    {...props}
+                />
+            );
+        }
+
+        const AdminPageLogin = (props) => {
+            return(
+                <AdminPage 
+                    mode='login'
+                    {...props}
+                />
+            );
+        }
         return (
             <div>
-                <Route exact strict path='/' component={Landing}/>
-                <Route exact strict path='/adminlogin' component={AdminPage}/>
+                <Route exact strict path='/' render={(props)=><Landing auth={auth} {...props} />}/>
+                <Route exact strict path='/adminsignup' component={AdminPageSignup}/>
+                <Route exact strict path='/adminlogin' component={AdminPageLogin}/>
                 <Route exact strict path='/code' component={CodePage}/>
-                <Route exact strict path='/code/post' component={Editor}/>
+                <Route exact strict path='/post' render={(props)=><Editor auth={auth} {...props} />} />
                 <Route exact strict path='/photography' component={PhotoPage}/>
                 <Route exact strict path='/bookreviews' component={BookReviewsPage} />
                 <Route exact strict path='/life' component={LifePage} />
                 <Route exact strict path='/contact' component={ContactPage} />
+                <Route path="/callback" render={(props) => {
+                    handleAuthentication(props);
+                    return <Callback {...props} /> 
+                }}/>
             </div>
         );
     }

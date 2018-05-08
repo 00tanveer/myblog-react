@@ -46,6 +46,11 @@ class Editor extends React.Component {
         this.attachQuillRefs = this.attachQuillRefs.bind(this);
     }
 
+    //AUTH
+    login(){
+        this.props.auth.login();
+    }
+
     //LIFECYCLE HOOKS
     componentDidMount(){
         this.attachQuillRefs();
@@ -126,16 +131,35 @@ class Editor extends React.Component {
     }
 
     render(){
+        const { isAuthenticated } = this.props.auth;
+        console.log(isAuthenticated());
         return(
-            <div className="text-editor">
-                <CustomToolbar />
-                &nbsp;
-                <ReactQuill
-                    ref={(el) => {this.reactQuillRef = el}}
-                    onChange={this.handleChange}
-                    modules={Editor.modules}
-                    formats={Editor.formats}
-                    defaultValue={this.state.editorHtml}/>
+            <div className="container">
+            {
+                isAuthenticated() && (
+                    <div className="text-editor">
+                        <CustomToolbar />
+                        &nbsp;
+                        <ReactQuill
+                            ref={(el) => {this.reactQuillRef = el}}
+                            onChange={this.handleChange}
+                            modules={Editor.modules}
+                            formats={Editor.formats}
+                            defaultValue={this.state.editorHtml}/>
+                    </div>
+                )
+            }
+            {
+                !isAuthenticated() && (
+                    <h4>
+                        You are not logged in! Please{' '}
+                        <a onClick={this.login.bind(this)}>
+                            Log In
+                        </a>
+                        {' '} to continue.
+                    </h4>
+                )
+            }
             </div>
         );
     }
