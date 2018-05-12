@@ -5,7 +5,8 @@ import App from './containers/App';
 
 import registerServiceWorker from './registerServiceWorker';
 import {injectGlobal} from 'styled-components';
-import {BrowserRouter} from 'react-router-dom';
+import {Router} from 'react-router-dom';
+import history from './history';
 
 injectGlobal`
     *,
@@ -28,7 +29,7 @@ injectGlobal`
 `
 
 //ReactDOM.render(<Landing />, document.getElementById('root'));
-ReactDOM.render(<BrowserRouter>
+ReactDOM.render(<Router history={history}>
     <App />
-</BrowserRouter>, document.getElementById('root'));
+</Router>, document.getElementById('root'));
 registerServiceWorker();

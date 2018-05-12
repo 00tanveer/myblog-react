@@ -2,21 +2,6 @@ import React from 'react';
 import Menu from '../../components/navigation/Menu';
 import styled from 'styled-components';
 
-// const H1 = styled.h1`
-
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   //height: 100px;
-//   //width: 100px;
-//   transform: translate(-50%, 50%);
-//   color: white;
-//   font-family: 'Lato', sans-serif;
-//   font-weight: 200;
-//   font-size: 13rem;
-//   text-align: center;
-// `
-
 const H2 = styled.h2`
   position: absolute;
   top: 50%;
@@ -33,12 +18,15 @@ const H2 = styled.h2`
 class Landing extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      authenticated: true
+    }
     this.logout = this.logout.bind(this);
   }
   //AUTH
-  logout(){
-    console.log('baal');  
+  logout(){  
     this.props.auth.logout();
+    this.setState({authenticated: false});
   }
 
   render() {
@@ -50,7 +38,7 @@ class Landing extends React.Component {
         <Menu/>
         {
           isAuthenticated() && (
-            <button><a onClick={this.logout}>Log out</a></button> 
+            <button onClick={this.logout}>Log out</button> 
           )
         }
       </div>

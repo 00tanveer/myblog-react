@@ -9,14 +9,13 @@ import ContactPage from './pages/ContactPage';
 import Editor from './RichTextEditor/Editor';
 import Callback from '../components/auth/Callback';
 
-import {Route, Redirect} from 'react-router-dom';
-import {requireAuth, isLoggedIn} from '../utils/AuthService';
+import {Route} from 'react-router-dom';
 import AuthService from '../utils/AuthService';
-import history from '../history';
 
 const auth = new AuthService();
 
 const handleAuthentication = ({location}) => {
+    //console.log(location);
     if (/access_token|id_token|error/.test(location.hash)) {
       auth.handleAuthentication();
     }
