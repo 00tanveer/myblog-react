@@ -10,6 +10,7 @@ class CodePage extends React.Component {
     axios.get('/blogs/blogs')
       .then(res => {
         //console.log(res.data.data.docs[0]);
+        console.log(res.data.data);
         const blogs = res.data.data.docs;
         this.setState({blogs});
         console.log(this.state.blogs);
@@ -19,9 +20,15 @@ class CodePage extends React.Component {
       })
   }
   render() { 
+    const {isAuthenticated}  = this.props.auth;
       return (
         <div>
-          <Button link label='Post a blog' to='/code/post'/>
+          {
+            isAuthenticated() && (
+              < Button link label = 'Post a blog'
+              to = '/code/post' / >
+            )
+          }
           <ul>
             {this.state.blogs.map(blog => <li>{blog.title}</li>)}
           </ul>

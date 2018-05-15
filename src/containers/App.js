@@ -1,6 +1,5 @@
 import React from 'react';
 import Landing from './pages/Landing';
-import AdminPage from './pages/AdminPage';
 import CodePage from './pages/CodePage';
 import PhotoPage from './pages/PhotoPage';
 import BookReviewsPage from './pages/BookReviewsPage';
@@ -22,29 +21,10 @@ const handleAuthentication = ({location}) => {
   }
 class App extends React.Component {
     render(){
-        const AdminPageSignup = (props) => {
-            return(
-                <AdminPage 
-                    mode='signup'
-                    {...props}
-                />
-            );
-        }
-
-        const AdminPageLogin = (props) => {
-            return(
-                <AdminPage 
-                    mode='login'
-                    {...props}
-                />
-            );
-        }
         return (
             <div>
-                <Route exact strict path='/' render={(props)=><Landing auth={auth} {...props} />}/>
-                <Route exact strict path='/adminsignup' component={AdminPageSignup}/>
-                <Route exact strict path='/adminlogin' component={AdminPageLogin}/>
-                <Route exact strict path='/code' component={CodePage}/>
+                <Route exact strict path='/' render={(props)=><Landing auth={auth} {...props} />} />
+                <Route exact strict path='/code' render={(props)=><CodePage auth={auth} {...props}/>} />
                 <Route exact strict path='/post' render={(props)=><Editor auth={auth} {...props} />} />
                 <Route exact strict path='/photography' component={PhotoPage}/>
                 <Route exact strict path='/bookreviews' component={BookReviewsPage} />

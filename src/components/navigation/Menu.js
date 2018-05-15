@@ -18,7 +18,7 @@ class Menu extends React.Component {
     }
 
     componentDidMount(){
-        console.log(window.innerWidth);
+        //console.log(window.innerWidth);
         this.updateDimensions();
         window.addEventListener("resize", this.updateDimensions.bind(this));
     }
@@ -200,7 +200,7 @@ class Menu extends React.Component {
                 <StyledLol>
                     <div className="navigation">
                         <input type="checkbox" className="checkbox" id="navi-toggle" />
-                        <label for="navi-toggle" className="button">
+                        <label htmlFor="navi-toggle" className="button">
                             <span className="icon">&nbsp;</span>
                         </label>
 
