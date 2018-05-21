@@ -26,7 +26,7 @@ class CodePage extends React.Component {
           {
             isAuthenticated() && (
               < Button link label = 'Post a blog'
-              to = '/code/post' / >
+              to = '/post' / >
             )
           }
           <ul>

@@ -56,13 +56,13 @@ class Editor extends React.Component {
     componentDidMount(){
         if(this.props.auth.isAuthenticated()){
             this.attachQuillRefs();
-            axios.get('/blogs/blogs?page=2')
-                .then(res => {
-                    console.log('hoga');
-                    console.log(res.data);
-                    this.quillRef.setContents(res.data.data.docs[7].delta_ops);
-                })
-            this.quillRef.setContents();
+            // axios.get('/blogs/blogs?page=2')
+            //     .then(res => {
+            //         console.log('hoga');
+            //         console.log(res.data);
+            //         this.quillRef.setContents(res.data.data.docs[7].delta_ops);
+            //     })
+            // this.quillRef.setContents();
         }
     }
 
