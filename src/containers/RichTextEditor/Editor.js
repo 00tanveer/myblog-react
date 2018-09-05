@@ -57,14 +57,13 @@ class Editor extends React.Component {
     //LIFECYCLE HOOKS
     componentDidMount(){
         this.attachQuillRefs();
-        // axios.get('/blogs/blogs?page=2')
-        //     .then(res => {
-        //         console.log('hoga');
-        //         console.log(res.data);
-        //         this.quillRef.setContents(res.data.data.docs[7].delta_ops);
-        //     })
-        // this.quillRef.setContents();
-        
+        axios.get('/blogs/blogs')
+            .then(res => {
+                console.log('hoga');
+                console.log(res.data);
+                console.log(res.data[0]);
+                this.quillRef.setContents(res.data.data[0].delta_ops);
+            })
     }
 
     componentDidUpdate(){
@@ -82,7 +81,7 @@ class Editor extends React.Component {
 
     handleChange(html) {
       this.setState({ editorHtml: html });
-      //console.log(this.quillRef.getContents().ops);
+      console.log(this.quillRef.getContents().ops);
 
       let blog = {
           title: 'blog',
@@ -90,7 +89,7 @@ class Editor extends React.Component {
           delta_ops: this.quillRef.getContents().ops
       }
       console.log(blog);
-      axios.post('/blogs/blogs', {blog})
+      axios.put('/blogs/blogs', {blog})
         .then(res => {
             console.log(res);
         })
