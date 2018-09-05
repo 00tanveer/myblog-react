@@ -1,65 +1,84 @@
-import history from '../history';
-import auth0 from 'auth0-js';
+import decode from 'jwt-decode';
+import Api from '../api/api';
+export default class AuthService {
+    // Initializing import variables
+    constructor(domain) {
+        this.domain = domain || 'http://localhost:4001'; // API server domain
+        this.fetch = this.fetch.bind(this);
+        this.login = this.login.bind(this);
+        this.getProfile = this.getProfile.bind(this);
+    }
 
-export default class Auth {
-  auth0 = new auth0.WebAuth({
-    domain: 'tansayshello.eu.auth0.com',
-    clientID: 'jXumdiNE14XFgi7I1K5Sjj4GbPFJ5Ozm',
-    redirectUri: 'http://localhost:3000/callback',
-    audience: 'https://tansayshello.eu.auth0.com/userinfo',
-    //responseType: 'token id_token',
-    responseType: 'token id_token',
-    scope: 'openid'
-  });
+    login(username, password) {
+        return Api.post('/auth/login', {
+            username: username,
+            password: password
+        }).then(res => {
+            //console.log(res.data.token);
+            this.setToken(res.data.token);
+            return Promise.resolve(res);
+        })
+    }
 
-  constructor() {
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.handleAuthentication = this.handleAuthentication.bind(this);
-    this.isAuthenticated = this.isAuthenticated.bind(this);
-  }
+    register(username, password) {
+        return Api.post('/auth/register', {
+            username: username,
+            password: password
+        }).then(res => {
+            //console.log('herere');
+            this.setToken(res.data.token);
+            return Promise.resolve(res);
+        })
+    }
 
-  login() {
-    this.auth0.authorize();
-  }
+    loggedIn() {
+        // Checks if there is a saved token and it's still valid
+        const token = this.getToken() // Getting token from localStorage
+        console.log(token);
+        return !!token && !this.isTokenExpired(token) // handwaiving here
+    }
 
-  handleAuthentication() {
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-        history.replace('/');
-        console.log(history);
-      } else if (err) {
-        history.replace('/');
-        console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
-      }
-    });
-  }
+    isTokenExpired(token) {
+        try {
+            const decoded = decode(token);
+            if (decoded.exp < Date.now() /1000) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            return false;
+        }
+    }
 
-  setSession(authResult) {
-    // Set the time that the access token will expire at
-    let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('expires_at', expiresAt);
-    // navigate to the home route
-    history.replace('/');
-  }
+    setToken(idToken) {
+        // Saves user token to localStorage
+        localStorage.setItem('id_token', idToken);
+    }
 
-  logout() {
-    // Clear access token and ID token from local storage
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
-    // navigate to the home route
-    history.replace('/');
-  }
+    getToken() {
+        // Retrieves the user token from localStorage
+        return localStorage.getItem('id_token');
+    }
 
-  isAuthenticated() {
-    // Check whether the current time is past the 
-    // access token's expiry time
-    let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return new Date().getTime() < expiresAt;
-  }
+    logout() {
+        // Clear user token and profile data from localStorage
+        localStorage.removeItem('id_token');
+    }
+
+    getProfile() {
+        // Using jwt-decode npm package to decode the token
+        return decode(this.getToken());
+    }
+
+    _checkStatus(response) {
+        // raises an error in case response status is not a success
+        if (response.status >= 200 && response.status < 300) {
+            return response;
+        } else {
+            var error = new Error(response.statusText);
+            error.response = response;
+            throw error
+        }
+    }
 }

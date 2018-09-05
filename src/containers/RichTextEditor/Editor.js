@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import axios from 'axios';
+//import Form from '../../components/forms/Form';
+import withAuth from '../../components/HOC/withAuth';
 
 const CustomToolbar = () => (
     <div id="toolbar">
@@ -54,16 +56,15 @@ class Editor extends React.Component {
 
     //LIFECYCLE HOOKS
     componentDidMount(){
-        if(this.props.auth.isAuthenticated()){
-            this.attachQuillRefs();
-            // axios.get('/blogs/blogs?page=2')
-            //     .then(res => {
-            //         console.log('hoga');
-            //         console.log(res.data);
-            //         this.quillRef.setContents(res.data.data.docs[7].delta_ops);
-            //     })
-            // this.quillRef.setContents();
-        }
+        this.attachQuillRefs();
+        // axios.get('/blogs/blogs?page=2')
+        //     .then(res => {
+        //         console.log('hoga');
+        //         console.log(res.data);
+        //         this.quillRef.setContents(res.data.data.docs[7].delta_ops);
+        //     })
+        // this.quillRef.setContents();
+        
     }
 
     componentDidUpdate(){
@@ -134,29 +135,18 @@ class Editor extends React.Component {
     }
 
     render(){
-        const { isAuthenticated } = this.props.auth;
-        console.log(isAuthenticated());
         return(
             <div className="container">
-            {
-                isAuthenticated() && (
-                    <div className="text-editor">
-                        <CustomToolbar />
-                        &nbsp;
-                        <ReactQuill
-                            ref={(el) => {this.reactQuillRef = el}}
-                            onChange={this.handleChange}
-                            modules={Editor.modules}
-                            formats={Editor.formats}
-                            defaultValue={this.state.editorHtml}/>
-                    </div>
-                )
-            }
-            {
-                !isAuthenticated() && (
-                    <button onClick={this.login}>Log in</button>
-                )
-            }
+                <div className="text-editor">
+                    <CustomToolbar />
+                    &nbsp;
+                    <ReactQuill
+                        ref={(el) => {this.reactQuillRef = el}}
+                        onChange={this.handleChange}
+                        modules={Editor.modules}
+                        formats={Editor.formats}
+                        defaultValue={this.state.editorHtml}/>
+                </div>
             </div>
         );
     }
@@ -198,4 +188,4 @@ Editor.formats = [
    'link', 'image', 'color',
 ]
 
-export default Editor;
+export default withAuth(Editor);
