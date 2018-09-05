@@ -4,7 +4,6 @@ export default class AuthService {
     // Initializing import variables
     constructor(domain) {
         this.domain = domain || 'http://localhost:4001'; // API server domain
-        this.fetch = this.fetch.bind(this);
         this.login = this.login.bind(this);
         this.getProfile = this.getProfile.bind(this);
     }
