@@ -1,15 +1,45 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import axios from 'axios';
-//import Form from '../../components/forms/Form';
-import withAuth from '../../components/HOC/withAuth';
 
-const CustomToolbar = () => (
+import withAuth from '../../components/HOC/withAuth';
+import styled from 'styled-components';
+import Button from '../../components/ui/Button';
+
+const Input = styled.input``;
+const StyledInput = Input.withComponent(Button);
+
+let Inline = ReactQuill.Quill.import('blots/inline');
+class SyntaxBlot extends Inline {
+    static create(value) {
+        let node = super.create();
+        node.setAttribute('src', value.url);
+        return node;
+    }
+
+    static value(node) {
+        return {
+            alt: node.getAttribute('alt'),
+            url: node.getAttribute('src')
+        };
+    }
+}
+
+SyntaxBlot.blotName = 'em';
+SyntaxBlot.tagName = 'strong';
+ReactQuill.Quill.register('formats/em', SyntaxBlot);
+const CustomToolbar = (props) => (
     <div id="toolbar">
       <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
         <option value="1" />
         <option value="2" />
         <option selected />
+      </select>
+      <select className="ql-size" defaultValue={""} onChange={e => e.persist()}>
+        <option value="small" />
+        <option value="normal" />
+        <option value="large" />
+        <option value="huge" />
       </select>
       <button className="ql-bold" />
       <button className="ql-italic" />
@@ -24,6 +54,7 @@ const CustomToolbar = () => (
       </select>
       <button className="ql-blockquote" />
       <button className="ql-code-block" />
+      <button onClick={props.syntaxButtonHandler} className="fa fa-code" />
       <button className="ql-align" />
       <button className="ql-image" />
       <button className="ql-link" />
@@ -32,6 +63,19 @@ const CustomToolbar = () => (
       <button className="ql-strike" />
     </div>
   );
+
+const QuillContainer = styled.div`
+  .quill { 
+      > .ql-container {
+          .ql-editor {
+              .ql-syntax {
+                  background-color: #2f4f4f!important;
+                  border: 1px solid grey!important;
+              }
+          }
+      }
+  }
+`
 
 class Editor extends React.Component {
 
@@ -45,6 +89,9 @@ class Editor extends React.Component {
         this.quillRef = null;
         this.reactQuillRef = null;
         this.handleChange = this.handleChange.bind(this);
+        this.imageHandler = this.imageHandler.bind(this);
+        this.syntaxButtonHandler = this.syntaxButtonHandler.bind(this);
+        this.saveHandler = this.saveHandler.bind(this);
         this.attachQuillRefs = this.attachQuillRefs.bind(this);
         this.login = this.login.bind(this);
     }
@@ -59,9 +106,6 @@ class Editor extends React.Component {
         this.attachQuillRefs();
         axios.get('/blogs/blogs')
             .then(res => {
-                console.log('hoga');
-                console.log(res.data);
-                console.log(res.data[0]);
                 this.quillRef.setContents(res.data.data[0].delta_ops);
             })
     }
@@ -80,29 +124,29 @@ class Editor extends React.Component {
     }
 
     handleChange(html) {
-      this.setState({ editorHtml: html });
-      console.log(this.quillRef.getContents().ops);
+        //console.log(html);
+        this.setState({ editorHtml: html });
+        //console.log(this.quillRef.getContents().ops);
 
-      let blog = {
-          title: 'blog',
-          body: '',
-          delta_ops: this.quillRef.getContents().ops
-      }
-      console.log(blog);
-      axios.put('/blogs/blogs', {blog})
+        let blog = {
+            title: 'blog',
+            body: '',
+            delta_ops: this.quillRef.getContents().ops
+        }
+        //console.log(blog);
+        axios.put('/blogs/blogs', {blog})
         .then(res => {
-            console.log(res);
+            //console.log(res);
         })
     }
 
-    imageHandler(){
+    imageHandler() {
         const input = document.createElement('input');
         input.setAttribute('type','file');
         input.click();
-
+    
         input.onchange = () => {
             const file = input.files[0];
-
             if(/^image\//.test(file.type)){
                 this.saveToServer(file);
             } else {
@@ -112,39 +156,79 @@ class Editor extends React.Component {
     }
 
     saveToServer(file) {
-        const fd = new FormData();
-        fd.append('image', file);
-  
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:3000/upload/image', true);
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            // this is callback data: url
-            const url = JSON.parse(xhr.responseText).data;
-            this.insertToEditor(url);
-          }
-        };
-        xhr.send(fd);
+        const data = new FormData();
+    
+        data.append('file', file);
+        data.append('filename', file.name);
+        // for (var key of data.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
+        fetch('/blogs/blogs/uploadPicture', {
+            method: 'POST',
+            body: data,
+        }).then((response) => {
+            response.json().then((body) => {
+                //this.setState({ imageURL: `http://localhost:8000/${body.file}` });
+                console.log(body);
+                this.insertToEditor(body.url);
+                //insertToEditor(body.file);
+        });
+        });
     }
 
     insertToEditor(url) {
         // push image url to rich editor.
-        const range = this.quillRef.getEditor.getSelection();
-        this.quillRef.getEditor.insertEmbed(range.index, 'image', `http://localhost:9000${url}`);
+        console.log(url);
+        const range = this.quillRef.getSelection();
+        console.log(range);
+        this.quillRef.insertEmbed(range.index, 'image', url);
+        this.quillRef.insertEmbed(range.index + 1, 'code', 'dsfsdf');
+    }
+
+    syntaxButtonHandler() {
+        console.log('herere');
+        let range = this.quillRef.getSelection();
+        console.log(range);
+        if (range) {
+            this.quillRef.format('em', true);
+            //this.quillRef.insertText(range.index, 'hahahaha', 'bold', false);
+        }
+    }
+
+    saveHandler() {
+        console.log('save clicked');
+        console.log(this.quillRef.getSelection());
     }
 
     render(){
+        const modules = {
+            toolbar: {
+                container: '#toolbar',
+                handlers: {
+                    image: this.imageHandler
+                }
+            },
+            syntax: true,
+            clipboard: {
+                matchVisual: false,
+            }
+        }
         return(
             <div className="container">
                 <div className="text-editor">
-                    <CustomToolbar />
+                    <CustomToolbar 
+                        syntaxButtonHandler={this.syntaxButtonHandler}/>
                     &nbsp;
                     <ReactQuill
                         ref={(el) => {this.reactQuillRef = el}}
                         onChange={this.handleChange}
-                        modules={Editor.modules}
+                        modules={modules}
                         formats={Editor.formats}
                         defaultValue={this.state.editorHtml}/>
+                    <StyledInput 
+                        label="Save"
+                        clickHandler={this.saveHandler} />
+                    &npsp;
                 </div>
             </div>
         );
@@ -155,7 +239,7 @@ Editor.modules = {
     toolbar: {
         container: '#toolbar',
         handlers: {
-            'image': this.imageHandler
+            image: Editor.prototype.imageHandler
         }
     },
     clipboard: {
@@ -182,7 +266,7 @@ Editor.modules = {
 
 Editor.formats = [
    'header', 'font', 'size',
-   'bold', 'italic', 'underline', 'strike', 'blockquote',
+   'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block',
    'list', 'bullet', 'indent',
    'link', 'image', 'color',
 ]

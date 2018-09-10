@@ -13,6 +13,10 @@ const Button = (props) => {
       border-radius: 3px;
       font-size: 2rem;
       padding: 1rem;
+      &:hover {
+        background-color: white;
+        color: black;
+      }
     `
     const LinkButton = Button.withComponent(Link);
     const StyledLinkButton = LinkButton.extend`
@@ -22,7 +26,7 @@ const Button = (props) => {
       margin: 2rem auto;
     `;
     return(
-        props.link ? <StyledLinkButton to={props.to}>{props.label}</StyledLinkButton> :<Button>{props.label}</Button>
+        props.link ? <StyledLinkButton to={props.to}>{props.label}</StyledLinkButton> :<Button onClick={props.clickHandler}>{props.label}</Button>
     );
 }
 
