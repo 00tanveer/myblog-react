@@ -34,7 +34,7 @@ class Landing extends React.Component {
     console.log(isAuthenticated());
     return (
       <div style={{position: "relative"}}>
-        <H2>TANVEER FAHAD HAQ</H2>
+        <H2>tansayshello</H2>
         <Menu/>
         {
           isAuthenticated() && (

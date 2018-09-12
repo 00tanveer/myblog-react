@@ -30,6 +30,7 @@ SyntaxBlot.tagName = 'strong';
 ReactQuill.Quill.register('formats/em', SyntaxBlot);
 const CustomToolbar = (props) => (
     <div id="toolbar">
+      <select className="ql-font" defaultValue={""} onChange={e => e.persist()} />
       <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
         <option value="1" />
         <option value="2" />
@@ -52,10 +53,10 @@ const CustomToolbar = (props) => (
         <option value="#d0d1d2" />
         <option selected />
       </select>
+      <select className="ql-background" />
       <button className="ql-blockquote" />
       <button className="ql-code-block" />
-      <button onClick={props.syntaxButtonHandler} className="fa fa-code" />
-      <button className="ql-align" />
+      <select className="ql-align" />
       <button className="ql-image" />
       <button className="ql-link" />
       <button className="ql-list" value="ordered" />
@@ -267,8 +268,8 @@ Editor.modules = {
 Editor.formats = [
    'header', 'font', 'size',
    'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block',
-   'list', 'bullet', 'indent',
-   'link', 'image', 'color',
+   'align', 'list', 'bullet', 'indent',
+   'link', 'image', 'color', 'background'
 ]
 
 export default withAuth(Editor);
